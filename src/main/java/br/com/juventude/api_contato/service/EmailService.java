@@ -39,7 +39,7 @@ public class EmailService {
 
         Map<String, Object> body = new HashMap<>();
         // O e-mail emissor fixo para testes no Resend
-        body.put("from", "onboarding@resend.dev"); 
+        body.put("from", dados.nome() + " <onboarding@resend.dev>");
         // O e-mail de destino DEVE ser o mesmo e-mail que você cadastrou no Resend
         body.put("to", "juventudejunqueiro@gmail.com"); 
         body.put("reply_to", dados.email());
