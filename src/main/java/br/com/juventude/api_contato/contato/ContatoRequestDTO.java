@@ -1,8 +1,6 @@
-package br.com.juventude.api_contato.dto;
+package br.com.juventude.api_contato.contato;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import org.springframework.beans.factory.annotation.Value;
 
 public record ContatoRequestDTO(
     @NotBlank(message = "O nome é obrigatório")

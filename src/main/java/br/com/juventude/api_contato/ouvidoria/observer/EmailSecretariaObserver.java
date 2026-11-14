@@ -34,6 +34,7 @@ public class EmailSecretariaObserver implements PropostaObserver {
                 mensagem
         );
 
-        emailService.enviarEmail(alerta);
+        // Chamando o método exato do seu EmailService
+        emailService.enviarEmailContato(alerta);
     }
 }

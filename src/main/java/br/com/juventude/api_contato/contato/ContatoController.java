@@ -1,14 +1,11 @@
-package br.com.juventude.api_contato.controller;
+package br.com.juventude.api_contato.contato;
 
-import br.com.juventude.api_contato.dto.ContatoRequestDTO;
-import br.com.juventude.api_contato.service.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/contato")
-@CrossOrigin(origins = "https://portal-juventude-junqueiro.vercel.app")
 public class ContatoController {
 
     private final EmailService emailService;
@@ -23,7 +20,7 @@ public class ContatoController {
             emailService.enviarEmailContato(request);
             return ResponseEntity.ok().body("Mensagem processada e enviada com sucesso.");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Falha na comunicação com o servidor SMTP.");
+            return ResponseEntity.internalServerError().body("Falha na comunicação com o servidor de e-mail.");
         }
     }
 }

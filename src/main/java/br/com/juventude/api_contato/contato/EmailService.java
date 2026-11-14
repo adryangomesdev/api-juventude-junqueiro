@@ -1,15 +1,6 @@
-package br.com.juventude.api_contato.service;
+package br.com.juventude.api_contato.contato;
 
-import br.com.juventude.api_contato.dto.ContatoRequestDTO;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class EmailService {
