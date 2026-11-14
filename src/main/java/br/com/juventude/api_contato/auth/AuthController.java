@@ -12,7 +12,7 @@ import java.util.Map;
 public class AuthController {
 
     @PostMapping("/logout")
-    public ResponseEntity> logout() {
+    public ResponseEntity logout() {
         return ResponseEntity.ok(Map.of("mensagem", "Sessão encerrada com sucesso."));
     }
 }
