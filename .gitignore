@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Arquivos de ambiente e credenciais locais (Segurança)
+.env
+.env.*
+**/application-local.properties
+**/application-dev.properties
+**/credentials.json
+*.pem
+*.key
