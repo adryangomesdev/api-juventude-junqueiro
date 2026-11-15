@@ -5,7 +5,9 @@ import br.com.juventude.api_contato.exception.PropostaFechadaException;
 import br.com.juventude.api_contato.exception.RecursoNaoEncontradoException;
 import br.com.juventude.api_contato.ouvidoria.observer.PropostaObserver;
 import br.com.juventude.api_contato.usuario.Usuario;
+import br.com.juventude.api_contato.usuario.UsuarioExcluidoEvent;
 import br.com.juventude.api_contato.usuario.UsuarioService;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,5 +83,14 @@ public class PropostaService {
         }
 
         return PropostaResponseDTO.fromEntity(proposta, totalApoios);
+    }
+
+    @EventListener
+    @Transactional
+    public void aoExcluirUsuario(UsuarioExcluidoEvent event) {
+        UUID usuarioId = event.usuarioId();
+        apoioRepository.deleteAllByUsuarioId(usuarioId);
+        apoioRepository.deleteAllByPropostaUsuarioId(usuarioId);
+        propostaRepository.deleteAllByUsuarioId(usuarioId);
     }
 }
