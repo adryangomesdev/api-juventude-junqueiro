@@ -39,11 +39,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Libera preflight CORS antes de qualquer validação de token
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Rotas 100% públicas (Contato, Login Social, leitura das propostas e rota interna de erro)
                         .requestMatchers(HttpMethod.POST, "/api/contato").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/propostas/**").permitAll()
                         .requestMatchers("/oauth2/**", "/login/**", "/error").permitAll()
-                        // Todas as demais rotas (criar proposta, apoiar, perfil) exigem JWT válido
+                        // Todas as demais rotas (criar proposta, apoiar, perfil, excluir conta) exigem JWT válido
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

@@ -10,14 +10,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "OPTIONS")
+                .allowedOriginPatterns(
+                        "https://portal-juventude-junqueiro.vercel.app",
+                        "http://localhost:*"
+                )
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(false);
+                .allowCredentials(true);
     }
 }
-
-
 /* package br.com.juventude.api_contato.config;
 
 import org.springframework.beans.factory.annotation.Value;
