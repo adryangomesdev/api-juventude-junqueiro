@@ -41,9 +41,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Libera preflight CORS antes de qualquer validação de token
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Rotas 100% públicas (Contato, Login Social, leitura das propostas e rota interna de erro)
+                        // Rotas 100% públicas (Health Check, Contato, Login Social, leitura das propostas e rota interna de erro)
+                        .requestMatchers(HttpMethod.GET, "/api/health", "/api/propostas/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contato").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/propostas/**").permitAll()
                         .requestMatchers("/oauth2/**", "/login/**", "/error").permitAll()
                         // Todas as demais rotas (criar proposta, apoiar, perfil, excluir conta) exigem JWT válido
                         .anyRequest().authenticated()
