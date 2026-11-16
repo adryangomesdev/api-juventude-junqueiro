@@ -4,10 +4,12 @@ import br.com.juventude.api_contato.exception.ApoioDuplicadoException;
 import br.com.juventude.api_contato.exception.PropostaFechadaException;
 import br.com.juventude.api_contato.exception.RecursoNaoEncontradoException;
 import br.com.juventude.api_contato.ouvidoria.observer.PropostaObserver;
+import br.com.juventude.api_contato.usuario.RoleEnum;
 import br.com.juventude.api_contato.usuario.Usuario;
 import br.com.juventude.api_contato.usuario.UsuarioExcluidoEvent;
 import br.com.juventude.api_contato.usuario.UsuarioService;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,6 +85,27 @@ public class PropostaService {
         }
 
         return PropostaResponseDTO.fromEntity(proposta, totalApoios);
+    }
+
+    @Transactional
+    public void excluirProposta(UUID usuarioId, Long propostaId) {
+        Usuario solicitante = usuarioService.buscarPorId(usuarioId);
+        Proposta proposta = propostaRepository.findById(propostaId)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Proposta não encontrada."));
+
+        boolean isAutor = proposta.getUsuario().getId().equals(solicitante.getId());
+        boolean isAdmin = solicitante.getRole() == RoleEnum.ROLE_ADMIN;
+
+        if (!isAutor && !isAdmin) {
+            throw new AccessDeniedException("Você não tem permissão para excluir esta proposta.");
+        }
+
+        if (proposta.getStatus() != StatusProposta.EM_VOTACAO && !isAdmin) {
+            throw new PropostaFechadaException("Propostas já encaminhadas para análise não podem ser excluídas.");
+        }
+
+        apoioRepository.deleteAllByPropostaId(propostaId);
+        propostaRepository.delete(proposta);
     }
 
     @EventListener

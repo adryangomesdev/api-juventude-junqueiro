@@ -39,4 +39,12 @@ public class PropostaController {
         PropostaResponseDTO atualizada = propostaService.apoiarProposta(usuarioId, id);
         return ResponseEntity.ok(atualizada);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirProposta(@PathVariable Long id,
+                                                Authentication authentication) {
+        UUID usuarioId = UUID.fromString(authentication.getName());
+        propostaService.excluirProposta(usuarioId, id);
+        return ResponseEntity.noContent().build();
+    }
 }

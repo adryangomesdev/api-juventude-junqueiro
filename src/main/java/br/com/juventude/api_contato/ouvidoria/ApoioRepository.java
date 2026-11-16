@@ -21,4 +21,8 @@ public interface ApoioRepository extends JpaRepository<Apoio, Long> {
     @Modifying
     @Query("DELETE FROM Apoio a WHERE a.proposta.usuario.id = :usuarioId")
     void deleteAllByPropostaUsuarioId(@Param("usuarioId") UUID usuarioId);
+
+    @Modifying
+    @Query("DELETE FROM Apoio a WHERE a.proposta.id = :propostaId")
+    void deleteAllByPropostaId(@Param("propostaId") Long propostaId);
 }
