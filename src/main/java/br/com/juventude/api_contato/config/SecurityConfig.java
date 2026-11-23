@@ -3,6 +3,7 @@ package br.com.juventude.api_contato.config;
 import br.com.juventude.api_contato.auth.CustomOAuth2UserService;
 import br.com.juventude.api_contato.auth.JwtAuthenticationFilter;
 import br.com.juventude.api_contato.auth.OAuth2SuccessHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -23,6 +27,9 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
                           OAuth2SuccessHandler oAuth2SuccessHandler,
@@ -37,7 +44,10 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Permite sessão temporária apenas para o handshake OAuth2 (parâmetro 'state')
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
                 .authorizeHttpRequests(auth -> auth
                         // Libera preflight CORS antes de qualquer validação de token
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
@@ -56,7 +66,11 @@ public class SecurityConfig {
                         .successHandler(oAuth2SuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             exception.printStackTrace();
-                            response.sendError(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
+                            String mensagemErro = URLEncoder.encode(
+                                    exception.getMessage() != null ? exception.getMessage() : "Falha na autenticacao",
+                                    StandardCharsets.UTF_8
+                            );
+                            response.sendRedirect(frontendUrl + "/#/login?erro=" + mensagemErro);
                         })
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
