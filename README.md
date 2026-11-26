@@ -6,8 +6,6 @@ API RESTful desenvolvida em Java com Spring Boot para gerenciamento de formulár
 * Elias Sales de Magalhães - 2025027204 | elias.magalhaes@arapiraca.ufal.br
 * Saulo Firmo do Nascimento - 2025027320 | saulo.nacimento@arapira.ufal.br
 
-![Projeto_em_UML](uml_projeto.png)
-
 ## Padrões de Projeto
 Visando as boas práticas de Programação Orientada a Objetos, o projeto faz uso de diversos padrões:
 * **Observer Pattern & Event-Driven:** Utilizado no acompanhamento de propostas. Ao atingir 20 apoios, a proposta emite um evento notificando a secretaria por e-mail automaticamente. Também utilizado na exclusão de usuários (`UsuarioExcluidoEvent`) para deletar dados em cascata de forma desacoplada.
