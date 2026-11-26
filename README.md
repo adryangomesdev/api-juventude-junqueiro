@@ -105,6 +105,4 @@ Para rodar a suíte de testes automatizados (que utiliza banco em memória H2):
 | `GET` | `/api/usuarios/perfil` | Retorna os dados do perfil logado | Requer JWT |
 | `DELETE` | `/api/usuarios/conta` | Exclui a conta e apaga dados (propostas/apoios) em cascata | Requer JWT |
 
-## Licença
 
-Este projeto está sob a licença [MIT](LICENSE).
