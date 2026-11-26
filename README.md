@@ -27,6 +27,7 @@ Este projeto foi construído utilizando as seguintes tecnologias e dependências
   * JJWT (`0.12.6`) para geração e validação de tokens JWT
 - **Serviço de E-mail:** Spring Boot Starter Mail
 - **Testes:** JUnit 5 & Mockito
+- **Análise:** Google Gemini
 
 ## Pré-requisitos
 
